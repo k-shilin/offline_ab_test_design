@@ -1,0 +1,8 @@
+pandas
+numpy
+altair
+streamlit
+sqlalchemy
+pyodbc
+databricks-sql-connector
+databricks-sdk
