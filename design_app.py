@@ -4,12 +4,15 @@ from datetime import datetime, timedelta, date
 from dictionaries import CHANNELS_DICT, COUNTRIES_DICT, SOURCES_DICT, TARGETS_DICT, CATEGORIES_DICT
 from design_flow import TestDesign
 
-st.title('Дизайн AB теста.')
+
+st.title('Дизайн AB теста')
 
 # Full example of using the with notation
 st.header('1. Выбор параметров теста')
 st.subheader('Параметры')
 
+#Иницилизация переменной products
+products = None
 with st.form('my_form'):
     st.subheader('**Укажите параметры теста**')
     # Input widgets
@@ -55,13 +58,18 @@ if submitted:
     if sources==['Все']:
         sources=list(SOURCES_DICT.keys())
 
+
     query_params = {
         'country': TestDesign.mapping_values(countries, COUNTRIES_DICT),
         'channel': TestDesign.mapping_values(channels, CHANNELS_DICT),
         'source': TestDesign.mapping_values(sources, SOURCES_DICT),
-        'category': TestDesign.mapping_values(categories, CATEGORIES_DICT),
-        'products': products
+        'category': TestDesign.mapping_values(categories, CATEGORIES_DICT)
     }
+    #Если загрузили список продуктов, то добавляем условие в запрос
+    if products:
+        query_params['products_subq'] = f"and ord.ComboProductUUId in ({products})"
+    else:
+        query_params['products_subq']=""
 
 
     # Создаем экземпляр класс
@@ -86,7 +94,7 @@ if submitted:
         and ord.OrderType in ({query_params['channel']})
         and ord.OrderSource in ({query_params['source']})
         and ord.ComboProductCategoryId in ({query_params['category']})
-        and ord.ComboProductUUId in ({query_params['products']})
+        {query_params['products_subq']}
         group by ord.UnitUUId,  
                 dep.name,
               ord.SaleDate
