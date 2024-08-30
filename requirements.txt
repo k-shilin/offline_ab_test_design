@@ -6,3 +6,7 @@ sqlalchemy
 pyodbc
 databricks-sql-connector
 databricks-sdk
+scipy
+matplotlib
+seaborn
+typing
