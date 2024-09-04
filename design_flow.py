@@ -39,15 +39,15 @@ class TestDesign:
         return lst
     @staticmethod
     def read_sql(query: str,
-                 server_hostname="adb-5812797581086196.16.azuredatabricks.net",
-                 http_path="/sql/1.0/warehouses/cbe60f5e62a3c9cb",
-                 access_token="dapi844cdc97068e58f28fe254d3e8c308bb-2") -> pd.DataFrame:
+                 server_hostname,
+                 http_path,
+                 access_token) -> pd.DataFrame:
 
         # Создание подключения
         connection = sql.connect(
             server_hostname=server_hostname,
             http_path=http_path,
-            access_token=access_token,
+            access_token=access_token
         )
 
         try:

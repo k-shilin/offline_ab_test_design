@@ -4,6 +4,9 @@ from datetime import datetime, timedelta, date
 from dictionaries import CHANNELS_DICT, COUNTRIES_DICT, SOURCES_DICT, TARGETS_DICT, CATEGORIES_DICT
 from design_flow import TestDesign
 
+server_hostname = st.secrets["databricks"]["server_hostname"]
+http_path = st.secrets["databricks"]["http_path"]
+databricks_token = st.secrets["databricks"]["access_token"]
 
 st.title('Дизайн AB теста')
 
@@ -100,7 +103,10 @@ if submitted:
               ord.SaleDate
         """
 
-    df_metrics_by_unit = TestDesign.read_sql(query=query)
+    df_metrics_by_unit = TestDesign.read_sql(query=query,
+                                            server_hostname=server_hostname,
+                                             http_path=http_path,
+                                             access_token=databricks_token)
 
     # Осталяем только данные по юнитам без пропусков
     df_metrics_by_unit['cnt_unique_dates'] = (df_metrics_by_unit
